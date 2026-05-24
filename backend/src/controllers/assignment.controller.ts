@@ -18,9 +18,9 @@ export const createAssignment =
     res: Response
   ) => {
 
-    let extractedText = "";
-
     try {
+
+      let extractedText = "";
 
       if (req.file) {
 
@@ -39,9 +39,7 @@ export const createAssignment =
       }
 
       const aiResponse =
-        await generateAssignmentQuestions(
-          extractedText
-        );
+        await generateAssignmentQuestions();
 
       const cleanedResponse =
         aiResponse
