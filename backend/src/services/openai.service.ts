@@ -1,11 +1,11 @@
 import "dotenv/config";
 
+import OpenAI from "openai";
+
 console.log(
   "OPENROUTER KEY:",
   process.env.OPENROUTER_API_KEY
 );
-
-import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey:
@@ -20,16 +20,19 @@ export const generateAssignmentQuestions =
     extractedText?: string
   ) => {
 
-    const completion =
-      await client.chat.completions.create({
-        model:
-          "openai/gpt-3.5-turbo",
+    try {
 
-        messages: [
-          {
-            role: "user",
+      const completion =
+        await client.chat.completions.create({
 
-            content: `
+          model:
+            "mistralai/mistral-7b-instruct:free",
+
+          messages: [
+            {
+              role: "user",
+
+              content: `
 You are an AI teacher assistant.
 
 Analyze the uploaded study material
@@ -42,6 +45,8 @@ IMPORTANT:
 - Create proper sections
 - Use varying difficulty levels
 - Return ONLY valid JSON
+- Do not add markdown
+- Do not add explanation text
 
 JSON FORMAT:
 
@@ -65,11 +70,28 @@ JSON FORMAT:
 Uploaded Content:
 ${extractedText}
 `,
-          },
-        ],
-      });
+            },
+          ],
 
-    return completion
-      .choices[0]
-      .message.content || "";
+          temperature: 0.7,
+
+          max_tokens: 2000,
+        });
+
+      return (
+        completion.choices[0]
+          .message.content || ""
+      );
+
+    } catch (error: any) {
+
+      console.log(
+        "OPENROUTER ERROR:",
+        error.message
+      );
+
+      throw new Error(
+        error.message
+      );
+    }
 };
