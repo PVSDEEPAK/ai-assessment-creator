@@ -22,7 +22,7 @@ export default function AssignmentsPage() {
 
           const response =
             await axios.get(
-              "https://ai-assessment-backend.onrender.com/api/assignments"
+              "https://ai-assessment-backend-s6lw.onrender.com/api/assignments"
             );
 
           setAssignments(

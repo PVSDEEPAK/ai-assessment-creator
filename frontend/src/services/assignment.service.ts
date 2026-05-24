@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API =
-  "https://ai-assessment-backend.onrender.com/api/assignments";
+  "/https://ai-assessment-backend-s6lw.onrender.com/api/assignments";
 
 export const createAssignment =
   async (data: any) => {
